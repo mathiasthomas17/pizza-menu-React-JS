@@ -68,14 +68,21 @@ function Header() {
 }
 // Menu Comp
 function Menu() {
+  const pizzas = pizzaData;
+  const numPizzas = pizzas.length;
+
   return (
     <main className="menu">
       <h2>Our Menu</h2>
-      <ul className="pizzas">
-        {pizzaData.map((pizza) => (
-          <Pizza pizzaOBJ={pizza} key={pizza.key} />
-        ))}
-      </ul>
+
+      {numPizzas > 0 && (
+        <ul className="pizzas">
+          {pizzas.map((pizza) => (
+            <Pizza pizzaOBJ={pizza} key={pizza.key} />
+          ))}
+        </ul>
+      )}
+
       {/* <Pizza
         name="Focaccia"
         ingredients="Bread with italian olive oil and rosemary"
@@ -113,14 +120,18 @@ function Footer() {
   const hour = new Date().getHours();
   const openHours = 4;
   const closeHour = 22;
-
+  // Conditional Rendering
   const isOpen = hour >= openHours && hour <= closeHour;
   console.log(hour);
   console.log(isOpen);
   return (
     <footer className="footer">
-      {" "}
-      {new Date().toLocaleString()} We are Now Open
+      {isOpen && (
+        <div className="order">
+          <p>We're Opened until {openHours}</p>
+          <button className="btn">Order</button>
+        </div>
+      )}
     </footer>
   );
 }
