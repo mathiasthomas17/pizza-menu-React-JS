@@ -75,12 +75,22 @@ function Menu() {
     <main className="menu">
       <h2>Our Menu</h2>
 
-      {numPizzas > 0 && (
-        <ul className="pizzas">
-          {pizzas.map((pizza) => (
-            <Pizza pizzaOBJ={pizza} key={pizza.key} />
-          ))}
-        </ul>
+      {numPizzas > 0 ? (
+        <React.Fragment>
+          <p>
+            Mashariki Foods' CO is an American multinational pizza restaurant
+            chain and international franchise founded in 1958 in Wichita, Kansas
+            by Dan and Frank Carney. The chain, headquartered in Plano, Texas,
+            operates 19,866 restaurants worldwide as of 2024
+          </p>
+          <ul className="pizzas">
+            {pizzas.map((pizza) => (
+              <Pizza pizzaOBJ={pizza} key={pizza.key} />
+            ))}
+          </ul>
+        </React.Fragment>
+      ) : (
+        <p>We ere still working on our menu.Please comeback</p>
       )}
 
       {/* <Pizza
@@ -99,17 +109,20 @@ function Menu() {
   );
 }
 // Pizza Component
-function Pizza(props) {
+function Pizza({ pizzaOBJ }) {
   // console.log(props);
   // Rule 1 - Func name must strat with capital
   //Func must return only 1 element
+  // if (pizzaOBJ.soldOut) return null;
+
   return (
-    <li className="pizza">
-      <img src={props.pizzaOBJ.photoName} alt={props.pizzaOBJ.name} />
+    <li className={`pizza ${pizzaOBJ.soldOut ? "sold-out" : ""}`}>
+      <img src={pizzaOBJ.photoName} alt={pizzaOBJ.name} />
       <div>
-        <h3>{props.pizzaOBJ.name}</h3>
-        <p>{props.pizzaOBJ.ingredients}</p>
-        <span>{props.pizzaOBJ.price + 8}</span>
+        <h3>{pizzaOBJ.name}</h3>
+
+        <p>{pizzaOBJ.ingredients}</p>
+        <span>{pizzaOBJ.soldOut ? "Solt Out" : pizzaOBJ.price + 8}</span>
       </div>
     </li>
   );
@@ -126,16 +139,26 @@ function Footer() {
   console.log(isOpen);
   return (
     <footer className="footer">
-      {isOpen && (
-        <div className="order">
-          <p>We're Opened until {openHours}</p>
-          <button className="btn">Order</button>
-        </div>
+      {isOpen ? (
+        <Order closeHour={closeHour} />
+      ) : (
+        <p>
+          Happy to welcom you between {openHours} and {closeHour}
+        </p>
       )}
     </footer>
   );
 }
 
+// order
+function Order(props) {
+  return (
+    <div className="order">
+      <p>We're Opened until {props.closeHour}</p>
+      <button className="btn">Order</button>
+    </div>
+  );
+}
 // React V18
 const root = ReactDom.createRoot(document.getElementById("root"));
 root.render(
